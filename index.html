@@ -162,6 +162,36 @@ total.innerText=(tyt+ayt)+" / 500";
 
 calc();
 
+ <script>
+document.querySelectorAll("input, textarea").forEach(el=>{
+  el.addEventListener("change",save);
+  el.addEventListener("keyup",save);
+});
+
+function save(){
+  let data={};
+  document.querySelectorAll("input, textarea").forEach(el=>{
+    if(el.type==="checkbox"){
+      data[el.id]=el.checked;
+    }else{
+      data[el.id]=el.value;
+    }
+  });
+  localStorage.setItem("yks",JSON.stringify(data));
+}
+
+window.onload=()=>{
+  let data=JSON.parse(localStorage.getItem("yks")||"{}");
+  document.querySelectorAll("input, textarea").forEach(el=>{
+    if(el.type==="checkbox"){
+      el.checked=data[el.id]||false;
+    }else{
+      el.value=data[el.id]||"";
+    }
+  });
+}
+</script>
+
 </script>
 
 </body>
