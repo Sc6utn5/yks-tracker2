@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>YKS Dashboard</title>
+
+<style>
+body{
+margin:0;
+font-family:Inter,Arial;
+background:#0b1220;
+color:#e5e7eb;
+}
+
+.container{
+max-width:1100px;
+margin:auto;
+padding:20px;
+}
+
+h1{text-align:center;margin-bottom:25px}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:20px;
+}
+
+.card{
+background:#111827;
+border-radius:16px;
+padding:20px;
+box-shadow:0 10px 30px rgba(0,0,0,.4);
+}
+
+.card h2{
+margin-top:0;
+color:#38bdf8;
+}
+
+.row{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin:10px 0;
+}
+
+input{
+width:70px;
+background:#020617;
+border:1px solid #334155;
+color:white;
+padding:6px;
+border-radius:8px;
+text-align:center;
+}
+
+.progress{
+height:8px;
+background:#020617;
+border-radius:10px;
+overflow:hidden;
+margin-top:10px;
+}
+
+.bar{
+height:100%;
+background:linear-gradient(90deg,#38bdf8,#22c55e);
+width:0%;
+transition:.3s;
+}
+
+textarea{
+width:100%;
+height:100px;
+background:#020617;
+border:1px solid #334155;
+color:white;
+border-radius:10px;
+padding:10px;
+}
+
+.big{
+font-size:28px;
+font-weight:700;
+}
+
+footer{
+opacity:.4;
+text-align:center;
+margin-top:30px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h1>YKS Günlük Dashboard</h1>
+
+<div class="grid">
+
+<div class="card">
+<h2>TYT (250)</h2>
+<div class="row">Mat <input id="tmat"></div>
+<div class="row">Türkçe <input id="tturk"></div>
+<div class="row">Sosyal <input id="tsos"></div>
+<div class="row">Fen <input id="tfen"></div>
+<div class="progress"><div id="tytbar" class="bar"></div></div>
+</div>
+
+<div class="card">
+<h2>AYT (250)</h2>
+<div class="row">Mat <input id="amat"></div>
+<div class="row">Fizik <input id="afiz"></div>
+<div class="row">Kimya <input id="akim"></div>
+<div class="row">Biyo <input id="abio"></div>
+<div class="progress"><div id="aytbar" class="bar"></div></div>
+</div>
+
+<div class="card">
+<h2>Toplam</h2>
+<div class="big" id="total">0 / 500</div>
+</div>
+
+<div class="card">
+<h2>Günlük Not</h2>
+<textarea id="note"></textarea>
+</div>
+
+</div>
+
+<footer>Disiplin = Sonuç</footer>
+</div>
+
+<script>
+
+const ids=["tmat","tturk","tsos","tfen","amat","afiz","akim","abio"];
+
+ids.forEach(id=>{
+let el=document.getElementById(id);
+el.value=localStorage.getItem(id)||"";
+el.oninput=()=>{
+localStorage.setItem(id,el.value);
+calc();
+};
+});
+
+note.value=localStorage.getItem("note")||"";
+note.oninput=()=>localStorage.setItem("note",note.value);
+
+function calc(){
+let tyt=(+tmat.value||0)+(+tturk.value||0)+(+tsos.value||0)+(+tfen.value||0);
+let ayt=(+amat.value||0)+(+afiz.value||0)+(+akim.value||0)+(+abio.value||0);
+
+tytbar.style.width=Math.min(tyt/250*100,100)+"%";
+aytbar.style.width=Math.min(ayt/250*100,100)+"%";
+
+total.innerText=(tyt+ayt)+" / 500";
+}
+
+calc();
+
+</script>
+
+</body>
+</html>
